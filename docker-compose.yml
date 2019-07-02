@@ -1,0 +1,19 @@
+version: "2"
+services:
+  zabbix:
+    image: zabbix/zabbix-appliance:latest
+    environment:
+      - VIRTUAL_HOST=${BASE_DOMAIN}
+    volumes:
+      - ./docker/runtime/mysql:/var/lib/mysql
+      - ./docker/mysql/dump:/docker-entrypoint-initdb.d:ro
+    ports:
+      - 10051:10051
+    expose:
+      - 80
+    networks:
+      - reverse-proxy
+networks:
+  reverse-proxy:
+    external:
+      name: reverse-proxy
